@@ -43,11 +43,11 @@ class Update(BaseModel):
     email: EmailStr
     telefono: int
     
-class VideoRequest(BaseModel):
-    url: str
-    calidad: str = None
-    subtitulos: bool = None
-    formato_subtitulos: str = None
+# class VideoRequest(BaseModel):
+#     url: str
+#     calidad: str = None
+#     subtitulos: bool = None
+#     formato_subtitulos: str = None
 
 
 @app.get("/", status_code=status.HTTP_200_OK, summary="Endpoint raíz")
@@ -136,7 +136,7 @@ def add_contactos(post: Post):
                 detail=f"El registro con ID {post.id} ya existe",
             )
 
-        with open('contactos.csv', 'a', newline="") as file:
+        with open('contactos.csv', 'a', newline="", encoding='utf-8') as file:
             fieldnames = ["id", "nombre", "primer_apellido", "segundo_apellido", "email", "telefono"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             row = post.model_dump()
@@ -293,7 +293,7 @@ def delete_contactos(id: str):
                 detail=f"Registro con ID {id} no encontrado",
             )
 
-        with open('contactos.csv', 'w', newline='') as file:
+        with open('contactos.csv', 'w', newline='', encoding='utf-8') as file:
             fieldnames = ["id", "nombre", "primer_apellido", "segundo_apellido", "email", "telefono"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
@@ -364,7 +364,7 @@ def update_contactos(id: str, update: Update):
                 detail=f"Registro con ID {id} no encontrado",
             )
 
-        with open('contactos.csv', 'w', newline='') as file:
+        with open('contactos.csv', 'w', newline='', encoding='utf-8') as file:
             fieldnames = ["id", "nombre", "primer_apellido", "segundo_apellido", "email", "telefono"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
