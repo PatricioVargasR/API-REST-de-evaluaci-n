@@ -171,7 +171,6 @@ def get_contactos_nombre(nombre: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Archivo no encontrado",
-                headers={"X-Error": "There goes my error"},
             )
 
         if nombre.isnumeric():
@@ -203,6 +202,54 @@ def get_contactos_nombre(nombre: str):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error interno del servidor: {str(e)}")  
 
+# @app.get("/contactos_query", status_code=status.HTTP_200_OK, summary="Endpoint para listar datos")
+# def get_contactos_query(nombre: str = Query()):
+#     """
+#     # Endpoint para obtener datos específicos de la API
+
+#     ## 1.- Status Codes:
+#     * 200 - Código de confirmación
+#     * 400 - Tipo de dato incorrecto
+#     * 404 - Registro no encontrado
+#     * 500 - Error interno en el servidor
+#     """
+#     try:
+#         # Verificar si el archivo existe antes de intentar abrirlo
+#         if not os.path.exists('contactos.csv'):
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Archivo no encontrado",
+#             )
+
+#         if nombre.isnumeric():
+#             raise HTTPException(
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 detail="Datos incorrectos: El nombre no debe ser un número",
+#             )
+        
+#         registros = []
+
+#         with open('contactos.csv', 'r') as file:
+#             reader = csv.DictReader(file)
+#             for row in reader:
+#                 if row['nombre'] == nombre:
+#                     registros.append(row)
+
+#         if not registros:
+#             # Si no se encontraron registros con el nombre especificado
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail=f"No se encontraron registros con el nombre '{nombre}'"
+#             )
+#         return registros
+
+#     except FileNotFoundError:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Archivo de contactos no encontrado")
+#     except HTTPException as he:
+#         raise he
+#     except Exception as e:
+#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error interno del servidor: {str(e)}")  
+
 
 @app.delete("/contactos/{id}", status_code=status.HTTP_204_NO_CONTENT, summary='Endpoint para eliminar un recurso')
 def delete_contactos(id: str):
@@ -221,14 +268,12 @@ def delete_contactos(id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Archivo no encontrado",
-                headers={"X-Error": "There goes my error"},
             )
 
         if not id.isdigit():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="ID no válido, debe ser un número",
-                headers={"X-Error": "There goes my error"},
             )
 
         registro = []
@@ -246,7 +291,6 @@ def delete_contactos(id: str):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Registro con ID {id} no encontrado",
-                headers={"X-Error": "There goes my error"},
             )
 
         with open('contactos.csv', 'w', newline='') as file:
